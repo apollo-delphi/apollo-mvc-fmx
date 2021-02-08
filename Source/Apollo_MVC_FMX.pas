@@ -4,21 +4,46 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  Apollo_MVC_Core;
 
 type
-  TForm1 = class(TForm)
+  TViewFMXBase = class(TForm, IViewBase, IViewMain)
+    procedure FormCreate(Sender: TObject);
   private
-    { Private declarations }
+    FBaseView: IViewBase;
+    function GetBaseView: IViewBase;
+    property BaseView: IViewBase read GetBaseView implements IViewBase;
+  protected
+    function SubscribeController: TControllerAbstract; virtual; abstract;
+    procedure FireEvent(const aEventName: string);
   public
-    { Public declarations }
   end;
 
-var
-  Form1: TForm1;
+  TControllerFMX = class(TControllerAbstract)
+  end;
 
 implementation
 
 {$R *.fmx}
+
+{ TViewFMXBase }
+
+procedure TViewFMXBase.FireEvent(const aEventName: string);
+begin
+  BaseView.FireEvent(aEventName);
+end;
+
+procedure TViewFMXBase.FormCreate(Sender: TObject);
+begin
+  BaseView.EventProc := SubscribeController.ViewEventsObserver;
+end;
+
+function TViewFMXBase.GetBaseView: IViewBase;
+begin
+  if not Assigned(FBaseView) then
+    FBaseView := TViewBase.Create(Self);
+  Result := FBaseView;
+end;
 
 end.
