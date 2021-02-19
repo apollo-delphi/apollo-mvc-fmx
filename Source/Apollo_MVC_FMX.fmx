@@ -1,12 +1,13 @@
 object ViewFMXBase: TViewFMXBase
   Left = 0
   Top = 0
-  Caption = 'Form1'
-  ClientHeight = 480
-  ClientWidth = 640
+  Caption = 'ViewFMXBase'
+  ClientHeight = 240
+  ClientWidth = 320
+  Position = MainFormCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnCreate = FormCreate
+  OnClose = FormClose
   DesignerMasterStyle = 0
 end
