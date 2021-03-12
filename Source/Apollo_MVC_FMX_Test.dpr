@@ -9,7 +9,7 @@ uses
   DUnitX.TestFramework,
   tstApollo_MVC_FMX in 'tstApollo_MVC_FMX.pas',
   Apollo_MVC_FMX in 'Apollo_MVC_FMX.pas' {ViewFMXMain},
-  Apollo_MVC_Core in '..\Vendors\Apollo_MVC_Core\Source\Apollo_MVC_Core.pas';
+  Apollo_MVC_Core in '..\Vendors\Apollo_MVC_Core\Apollo_MVC_Core.pas';
 
 begin
   Application.Initialize;
