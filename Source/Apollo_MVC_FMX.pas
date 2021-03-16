@@ -8,6 +8,8 @@ uses
   Apollo_MVC_Core;
 
 type
+  TControllerFMX = class;
+
   TViewFMXBase = class abstract(TForm, IViewBase)
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -20,9 +22,9 @@ type
     constructor CreateByController(aViewEventProc: TViewEventProc);
   end;
 
-  TViewFMXMain = class abstract(TViewFMXBase, IViewMain)
+  TViewFMXMain = class abstract(TViewFMXBase)
   protected
-    function SubscribeController: TControllerAbstract; virtual; abstract;
+    function SubscribeController: TControllerFMX; virtual; abstract;
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -60,7 +62,7 @@ end;
 function TViewFMXBase.GetBaseView: IViewBase;
 begin
   if not Assigned(FBaseView) then
-    FBaseView := TViewBase.Create(Self);
+    FBaseView := MakeViewBase(Self);
   Result := FBaseView;
 end;
 
@@ -80,15 +82,22 @@ end;
 { TViewFMXMain }
 
 constructor TViewFMXMain.Create(AOwner: TComponent);
+var
+  Controller: TControllerFMX;
 begin
   inherited;
 
-  if SubscribeController is TControllerFMX then
-    TControllerFMX(SubscribeController).RegisterMainView(Self)
+  try
+    Controller := SubscribeController as TControllerFMX;
+  except
+    on E: EAbstractError do
+      raise Exception.CreateFmt('MVC_FMX: %s should override SubscribeController virtual function', [ClassName]);
   else
-    raise Exception.Create('Error Message');
+    raise;
+  end;
 
-  BaseView.EventProc := SubscribeController.ViewEventsObserver;
+  Controller.RegisterMainView(Self);
+  BaseView.EventProc := Controller.ViewEventsObserver;
 end;
 
 end.
