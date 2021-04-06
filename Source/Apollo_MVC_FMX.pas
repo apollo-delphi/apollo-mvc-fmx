@@ -17,6 +17,7 @@ type
     function GetBaseView: IViewBase;
     property BaseView: IViewBase read GetBaseView implements IViewBase;
   protected
+    function EmbedFrame<T: TFrame>(var aFrameKeeper: TFrame; aOwner: TFmxObject): T;
     procedure FireEvent(const aEventName: string);
   public
     constructor CreateByController(aViewEventProc: TViewEventProc);
@@ -47,6 +48,19 @@ begin
   Create(nil);
 
   BaseView.EventProc := aViewEventProc;
+end;
+
+function TViewFMXBase.EmbedFrame<T>(var aFrameKeeper: TFrame;
+  aOwner: TFmxObject): T;
+begin
+  if Assigned(aFrameKeeper) then
+    FreeAndNil(aFrameKeeper);
+
+  Result := T.Create(Self);
+  Result.Parent := aOwner;
+  Result.Align := TAlignLayout.Client;
+
+  aFrameKeeper := Result;
 end;
 
 procedure TViewFMXBase.FireEvent(const aEventName: string);
