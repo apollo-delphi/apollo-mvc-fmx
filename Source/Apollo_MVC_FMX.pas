@@ -4,6 +4,10 @@ interface
 
 uses
   Apollo_MVC_Core,
+  FireDAC.Comp.UI,
+  FireDAC.FMXUI.Wait,
+  FireDAC.Stan.Intf,
+  FireDAC.UI.Intf,
   FMX.Controls,
   FMX.Dialogs,
   FMX.Forms,
@@ -15,10 +19,11 @@ uses
   System.UITypes,
   System.Variants;
 
- type
+  type
   TControllerFMX = class;
 
   TViewFMXBase = class abstract(TForm, IViewBase)
+    WaitCursor: TFDGUIxWaitCursor;
     procedure FormClose(Sender: TObject; var Action: TCloseAction); virtual;
   private
     FBaseView: IViewBase;
