@@ -99,6 +99,7 @@ end;
 procedure TViewFMXBase.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := TCloseAction.caFree;
+  FireEvent('ViewClose');
 end;
 
 function TViewFMXBase.GetBaseView: IViewBase;
