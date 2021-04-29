@@ -8,11 +8,5 @@ object ViewFMXBase: TViewFMXBase
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnClose = FormClose
   DesignerMasterStyle = 0
-  object WaitCursor: TFDGUIxWaitCursor
-    Provider = 'FMX'
-    Left = 256
-    Top = 16
-  end
 end
