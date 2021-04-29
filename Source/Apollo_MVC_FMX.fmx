@@ -4,7 +4,7 @@ object ViewFMXBase: TViewFMXBase
   Caption = 'ViewFMXBase'
   ClientHeight = 240
   ClientWidth = 320
-  Position = MainFormCenter
+  Position = OwnerFormCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]

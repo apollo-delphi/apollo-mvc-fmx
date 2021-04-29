@@ -47,9 +47,9 @@ uses
 
   TControllerFMX = class abstract(TControllerAbstract)
   private
-    FRememberList: TStringList;
+    //FRememberList: TStringList;
     function GetRememberFilePath: string;
-    function GetRememberList: TStringList;
+    //function GetRememberList: TStringList;
     function GetRowKey(const aViewName, aPropName: string): string;
     procedure RecoverRemembers(aView: TViewFMXBase);
     procedure RegisterMainView(aMainView: TViewFMXMain);
