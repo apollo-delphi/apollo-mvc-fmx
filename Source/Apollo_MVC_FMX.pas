@@ -59,7 +59,10 @@ end;
 function TViewFMXBase.GetBaseView: IViewBase;
 begin
   if not Assigned(FBaseView) then
+  begin
     FBaseView := MakeViewBase(Self);
+    FBaseView.OnRecover := Recover;
+  end;
   Result := FBaseView;
 end;
 
