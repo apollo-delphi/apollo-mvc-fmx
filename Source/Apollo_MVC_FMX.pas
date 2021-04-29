@@ -25,6 +25,7 @@ type
   protected
     procedure DoClose(var Action: TCloseAction); override;
     procedure FireEvent(const aEventName: string);
+    procedure Recover(const aPropName: string; aValue: string); virtual;
     procedure Remember(const aPropName: string; const aValue: Variant);
   end;
 
@@ -60,6 +61,10 @@ begin
   if not Assigned(FBaseView) then
     FBaseView := MakeViewBase(Self);
   Result := FBaseView;
+end;
+
+procedure TViewFMXBase.Recover(const aPropName: string; aValue: string);
+begin
 end;
 
 procedure TViewFMXBase.Remember(const aPropName: string; const aValue: Variant);
