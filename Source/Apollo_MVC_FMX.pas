@@ -25,7 +25,6 @@ type
   protected
     procedure DoClose(var Action: TCloseAction); override;
     procedure FireEvent(const aEventName: string);
-    procedure FreeNotification(AObject: TObject); override;
     procedure InitControls; virtual;
     procedure InitVariables; virtual;
     procedure Recover(const aPropName: string; aValue: Variant); virtual;
@@ -68,14 +67,6 @@ begin
   ViewBase.FireEvent(aEventName);
 end;
 
-procedure TViewFMXBase.FreeNotification(AObject: TObject);
-begin
-  inherited;
-
-  if AObject is TFrame then
-    GetViewBase.EventProc(mvcRemoverFame, TFrame(AObject));
-end;
-
 function TViewFMXBase.GetViewBase: IViewBase;
 begin
   if not Assigned(FViewBase) then
@@ -115,10 +106,16 @@ constructor TViewFMXMain.Create(AOwner: TComponent);
 var
   Controller: TControllerAbstract;
 begin
-  inherited;
+  gAllowDirectConstructorForView := True;
+  try
+    inherited;
+  finally
+    gAllowDirectConstructorForView := False;
+  end;
 
   try
-    LinkToController(Controller);
+    Controller := nil;
+    LinkToController({out}Controller);
   except
     on E: EAbstractError do
       raise Exception.CreateFmt('MVC_FMX: %s should override LinkToController virtual procedure',
@@ -127,7 +124,10 @@ begin
     raise;
   end;
 
-  Controller.RegisterView(Self);
+  if not Assigned(Controller) then
+    raise Exception.CreateFmt('MVC_FMX: procedure LinkToController out param aController is not assigned.', [ClassName]);
+
+  ViewBase.RegisterInController(Controller);
 end;
 
 { TFrameHelper }
